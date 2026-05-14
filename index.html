@@ -1427,7 +1427,7 @@ body{
 .app{
   min-height:100vh;
   height:auto;
-  grid-template-rows:64px minmax(500px,58vh) minmax(760px,auto) 36px;
+  grid-template-rows:64px minmax(640px,72vh) minmax(760px,auto) 36px;
   grid-template-columns:300px minmax(0,1fr) 340px;
   grid-template-areas:
     "header header header"
@@ -1510,7 +1510,7 @@ body{
 .landing-copy{
   position:relative;
   z-index:4;
-  padding:72px 0 52px 76px;
+  padding:58px 0 74px 76px;
   max-width:760px;
 }
 .landing-eyebrow{
@@ -1553,7 +1553,7 @@ body{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:36px;
-  margin-top:42px;
+  margin-top:28px;
   max-width:760px;
 }
 .landing-feature{
@@ -1747,7 +1747,8 @@ body{
   }
   .landing-features{
     grid-template-columns:1fr;
-    gap:18px;
+    gap:16px;
+    margin-top:24px;
   }
   .hero-visual{
     min-height:300px;
@@ -1759,6 +1760,30 @@ body{
     position:static;
   }
 }
+  
+
+/* Final clipping + confidence calibration patch */
+.landing-hero{
+  min-height:640px;
+  overflow:hidden;
+}
+.landing-copy{
+  padding-top:58px;
+  padding-bottom:74px;
+}
+.landing-features{
+  margin-top:28px;
+  padding-bottom:28px;
+}
+@media(max-width:1200px){
+  .landing-hero{min-height:auto;}
+  .landing-copy{padding-bottom:56px;}
+}
+@media(max-width:768px){
+  .landing-copy{padding-bottom:42px;}
+  .landing-features{margin-top:24px;padding-bottom:0;}
+}
+
   </style>
 </head>
 <body data-mode="decision">
@@ -1788,7 +1813,7 @@ body{
         <div class="landing-features">
           <div class="landing-feature"><div class="landing-icon">◎</div><div><b>Coherence First</b><span>Evaluate actions by safety, feasibility, and intent alignment.</span></div></div>
           <div class="landing-feature"><div class="landing-icon">▱</div><div><b>Local &amp; Private</b><span>Runs on-device. Robot state stays under operator control.</span></div></div>
-          <div class="landing-feature"><div class="landing-icon">◇</div><div><b>Deterministic Judgment</b><span>Same input produces the same score. No hidden state.</span></div></div>
+          <div class="landing-feature"><div class="landing-icon">◇</div><div><b>Stateless Judgment</b><span>Same input. Same score. No hidden state.</span></div></div>
         </div>
       </div>
       <div class="hero-visual" aria-hidden="true"></div>
@@ -1867,7 +1892,7 @@ body{
         </div>
 
         <div class="metric-card">
-          <div class="metric-label">Confidence</div>
+          <div class="metric-label">Fit / Separation</div>
           <div class="metric-value" id="confidence-pct">—</div>
           <div class="metric-bar">
             <div class="metric-bar-fill" id="confidence-fill" style="width: 0%"></div>
@@ -1908,7 +1933,7 @@ body{
       <div class="status-segment">
         <div class="status-kv"><strong>Engine:</strong> <span id="footer-engine">&lt;1ms</span></div>
         <div class="status-kv"><strong>API:</strong> <span id="footer-api">—</span></div>
-        <div class="status-kv"><strong>Confidence:</strong> <span id="footer-confidence">—</span></div>
+        <div class="status-kv"><strong>Fit:</strong> <span id="footer-confidence">—</span></div>
       </div>
       <div class="status-segment">
         <div class="status-kv"><strong>Architecture:</strong> 26MB · CPU-only · robotics skill + action routing</div>
@@ -1930,7 +1955,8 @@ body{
     function normalizeCandidate(v){ return String(v||'').replace(/\s+/g,' ').trim().toLowerCase(); }
     function escapeHTML(v){ return String(v??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
     function setText(id,val){ const el=document.getElementById(id); if(el) el.textContent=val; }
-    function calculateConfidence(gap){ if(gap>0.18) return 'HIGH'; if(gap>0.075) return 'MODERATE'; return 'LOW'; }
+    function getFitLabel(score){ if(score < 0.500) return 'Low fit'; if(score < 0.650) return 'Moderate fit'; if(score < 0.800) return 'High fit'; return 'Strong fit'; }
+    function getSeparationLabel(gap){ if(gap < 0.020) return 'Close race'; if(gap < 0.060) return 'Separated'; return 'Clear winner'; }
     function summarize(v){ const first=String(v).split(/[,.]/)[0].trim(); return first.length>42 ? first.slice(0,39)+'...' : first; }
 
     function groupedScenarios(){
@@ -2144,8 +2170,10 @@ body{
       const maxScore = winnerRow.score;
       const secondScore = sorted[1]?.score ?? 0;
       const gap = maxScore - secondScore;
-      const confidence = calculateConfidence(gap);
-      const confidencePct = maxScore ? Math.max(0, Math.min(100, Math.round((gap/Math.abs(maxScore))*100))) : 0;
+      const fit = getFitLabel(maxScore);
+      const separation = getSeparationLabel(gap);
+      const confidence = `${fit} · ${separation}`;
+      const confidencePct = Math.max(0, Math.min(100, Math.round(maxScore * 100)));
       const winnerSubstrate = destinations[winner];
       const latencyLabel = fromCache ? `${latency}ms cached` : `${latency}ms`;
 
@@ -2169,7 +2197,7 @@ body{
         node?.classList.toggle('winner', isWinner);
         if(scoreEl){ scoreEl.textContent = row.score.toFixed(4); scoreEl.style.color = isWinner ? 'var(--accent)' : ''; }
         if(barEl) barEl.style.width = `${pct}%`;
-        if(badgeEl) badgeEl.textContent = isWinner ? `${activeMode === 'skill' ? 'Route' : 'Select'} · ${confidence}` : destinations[row.substrate].category;
+        if(badgeEl) badgeEl.textContent = isWinner ? `${activeMode === 'skill' ? 'Route' : 'Select'} · ${fit}` : destinations[row.substrate].category;
       });
 
       const pill = document.getElementById('route-pill');
@@ -2189,7 +2217,8 @@ body{
         category: winnerSubstrate.category,
         score: Number(maxScore.toFixed(6)),
         gap: Number(gap.toFixed(6)),
-        confidence,
+        fit,
+        separation,
         latency_ms: latency,
         cache: fromCache,
         endpoint: API,
