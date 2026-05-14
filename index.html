@@ -1098,7 +1098,7 @@
       .candidate-list { padding: 0 24px; }
     }
   
-/* Global Chain messaging pass — no ornamental graphics, Inter + JetBrains Mono */
+/* Robotics shell pass — no dead top menu links */
 :root{
   --font-sans:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   --font-mono:'JetBrains Mono','SF Mono',monospace;
@@ -1145,20 +1145,20 @@ button,textarea,input{
 .hero-desc{
   max-width:660px;
 }
-.global-chain-strip{
+.robotics-strip{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
   gap:8px;
   margin-top:18px;
 }
-.global-chain-strip div{
+.robotics-strip div{
   min-height:92px;
   padding:14px;
   border:1px solid var(--hairline);
   border-radius:10px;
   background:var(--surface);
 }
-.global-chain-strip span{
+.robotics-strip span{
   display:block;
   font-family:var(--font-mono);
   font-size:9px;
@@ -1166,7 +1166,7 @@ button,textarea,input{
   color:var(--accent);
   margin-bottom:12px;
 }
-.global-chain-strip b{
+.robotics-strip b{
   display:block;
   font-size:12px;
   line-height:1.15;
@@ -1174,7 +1174,7 @@ button,textarea,input{
   letter-spacing:-.015em;
   margin-bottom:8px;
 }
-.global-chain-strip small{
+.robotics-strip small{
   display:block;
   font-family:var(--font-mono);
   font-size:9px;
@@ -1217,7 +1217,7 @@ button,textarea,input{
   content:'';
 }
 @media(max-width:1200px){
-  .global-chain-strip{
+  .robotics-strip{
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
@@ -1272,7 +1272,7 @@ button,textarea,input{
   .command-btn{
     min-height:44px;
   }
-  .global-chain-strip{
+  .robotics-strip{
     grid-template-columns:1fr;
   }
   .constellation{
@@ -1295,9 +1295,6 @@ button,textarea,input{
   }
 }
 
-
-
-/* Robotics shell pass — keep Global Chain bones, swap semantics */
 .mode-switch{
   display:flex;
   gap:8px;
@@ -1327,42 +1324,6 @@ button,textarea,input{
   border-color:rgba(0,240,255,.25);
   background:rgba(0,240,255,.07);
   box-shadow:0 0 24px rgba(0,240,255,.06);
-}
-.robotics-strip{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:8px;
-  margin-top:18px;
-}
-.robotics-strip div{
-  min-height:92px;
-  padding:14px;
-  border:1px solid var(--hairline);
-  border-radius:10px;
-  background:var(--surface);
-}
-.robotics-strip span{
-  display:block;
-  font-family:var(--font-mono);
-  font-size:9px;
-  letter-spacing:.14em;
-  color:var(--accent);
-  margin-bottom:12px;
-}
-.robotics-strip b{
-  display:block;
-  font-size:12px;
-  line-height:1.15;
-  color:var(--text-primary);
-  letter-spacing:-.015em;
-  margin-bottom:8px;
-}
-.robotics-strip small{
-  display:block;
-  font-family:var(--font-mono);
-  font-size:9px;
-  line-height:1.45;
-  color:var(--text-tertiary);
 }
 .editor-panel{
   padding:18px;
@@ -1444,206 +1405,361 @@ body[data-mode="decision"] .candidate-editor-panel{ display:flex; }
   .mode-btn{ flex:1; }
 }
 
-  
-
-/* Desktop scroll correction — center stage owns vertical scroll, rails remain fixed */
-
-/* Selected route surface */
-.dominant-selection{
-  margin-top:20px;
-  border:1px solid rgba(0,240,255,.18);
-  border-radius:14px;
-  background:linear-gradient(135deg,rgba(0,240,255,.075),rgba(255,255,255,.018) 48%,rgba(0,0,0,.22));
-  box-shadow:0 24px 80px rgba(0,0,0,.32), inset 0 1px 0 rgba(0,240,255,.16);
-  overflow:hidden;
-  display:none;
+/* ─── Landing hero (no deadlinks) ─── */
+:root{
+  --accent:#00f0ff;
+  --accent-dim:rgba(0,240,255,.16);
+  --accent-glow:0 0 36px rgba(0,240,255,.16),0 0 80px rgba(0,240,255,.05);
+  --success:#4fd47d;
 }
-.dominant-selection.active{display:block;}
-.dominant-topline{
-  display:flex;
+html,body{
+  height:auto;
+  min-height:100%;
+  overflow:auto;
+}
+body{
+  background:#050606;
+}
+.ambient-bg,
+.grid-overlay{
+  position:fixed;
+}
+.app{
+  min-height:100vh;
+  height:auto;
+  grid-template-rows:64px minmax(500px,58vh) minmax(760px,auto) 36px;
+  grid-template-columns:300px minmax(0,1fr) 340px;
+  grid-template-areas:
+    "header header header"
+    "landing landing landing"
+    "nav main telemetry"
+    "status status status";
+}
+.header{
+  position:sticky;
+  top:0;
+  z-index:90;
+  display:grid;
+  grid-template-columns:330px minmax(0,1fr) auto;
+  gap:24px;
+  background:rgba(5,6,6,.88);
+  backdrop-filter:blur(20px) saturate(150%);
+}
+.brand{
   align-items:center;
-  justify-content:space-between;
-  gap:14px;
-  padding:14px 16px;
-  border-bottom:1px solid var(--hairline);
-  background:rgba(0,0,0,.18);
 }
-.dominant-kicker{
-  font-family:var(--font-mono);
-  font-size:9px;
-  font-weight:600;
-  text-transform:uppercase;
-  letter-spacing:.16em;
-  color:var(--accent);
+.brand::before{
+  content:'';
+  width:20px;
+  height:20px;
+  border:1px solid rgba(0,240,255,.72);
+  border-radius:5px;
+  transform:rotate(45deg);
+  box-shadow:inset 0 0 0 5px rgba(0,240,255,.08);
+  flex:0 0 auto;
 }
-.dominant-mode{
-  font-family:var(--font-mono);
-  font-size:9px;
-  letter-spacing:.1em;
+.brand h1{
   text-transform:uppercase;
+  letter-spacing:.035em;
+  font-size:18px;
+}
+.brand span{
   color:var(--text-tertiary);
-  white-space:nowrap;
+  letter-spacing:.16em;
 }
-.dominant-body{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:18px;
-  padding:18px 18px 16px;
-  align-items:end;
-}
-.dominant-code{
-  font-family:var(--font-mono);
-  font-size:10px;
-  font-weight:600;
-  letter-spacing:.12em;
-  color:var(--accent);
-  margin-bottom:8px;
-}
-.dominant-name{
-  font-size:clamp(20px,2.4vw,32px);
-  font-weight:700;
-  letter-spacing:-.05em;
-  line-height:1.05;
-  color:var(--text-primary);
-}
-.dominant-desc{
-  margin-top:10px;
-  max-width:760px;
-  font-size:12px;
-  color:var(--text-secondary);
-  line-height:1.55;
-}
-.dominant-stats{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(82px,auto));
-  gap:8px;
-}
-.dominant-stat{
-  min-width:82px;
-  padding:10px 12px;
-  border:1px solid var(--hairline);
-  border-radius:10px;
+.spec-pill{
   background:rgba(0,0,0,.24);
 }
-.dominant-stat span{
-  display:block;
-  font-family:var(--font-mono);
-  font-size:8px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--text-tertiary);
-  margin-bottom:6px;
-}
-.dominant-stat b{
-  display:block;
-  font-family:var(--font-mono);
-  font-size:15px;
-  font-weight:400;
-  color:var(--text-primary);
-}
-.dominant-stat b.accent{color:var(--accent);text-shadow:0 0 20px var(--accent-dim);}
-.node.dominant-node{
-  grid-column:1 / -1;
-  min-height:132px;
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 160px;
-  gap:18px;
-  align-items:end;
-  padding:20px;
-  background:linear-gradient(135deg,rgba(0,240,255,.09),rgba(255,255,255,.024) 58%,rgba(0,0,0,.26));
+.spec-pill:hover{
   border-color:rgba(0,240,255,.28);
+  color:var(--accent);
+  background:rgba(0,240,255,.05);
 }
-.node.dominant-node .node-code{font-size:10px;color:var(--accent);}
-.node.dominant-node .node-name{font-size:18px;color:var(--text-primary);max-width:820px;}
-.node.dominant-node .node-score{font-size:28px;color:var(--accent);text-align:right;}
-.node.dominant-node .node-track{grid-column:1 / -1;}
-.node.dominant-node .node-badge{grid-column:1 / -1;color:var(--accent);}
-@media(max-width:768px){
-  .dominant-body{grid-template-columns:1fr;}
-  .dominant-stats{grid-template-columns:repeat(2,minmax(0,1fr));}
-  .dominant-stat{min-width:0;}
-  .dominant-stat b{font-size:12px;}
-  .node.dominant-node{grid-template-columns:1fr;min-height:auto;}
-  .node.dominant-node .node-score{text-align:left;font-size:24px;}
+.landing-hero{
+  grid-area:landing;
+  position:relative;
+  overflow:hidden;
+  border-bottom:1px solid var(--hairline);
+  background:#070808;
+  display:grid;
+  grid-template-columns:minmax(420px,.92fr) minmax(580px,1.08fr);
 }
-
-
-html, body {
-  height: 100%;
+.landing-hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(5,6,6,.99) 0%, rgba(5,6,6,.86) 31%, rgba(5,6,6,.28) 58%, rgba(5,6,6,.42) 100%),
+    linear-gradient(180deg, rgba(5,6,6,.02), rgba(5,6,6,.86) 100%),
+    radial-gradient(circle at 70% 30%, rgba(0,240,255,.16), transparent 30%);
 }
-body {
-  overflow: hidden;
+.landing-hero::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.020) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.017) 1px, transparent 1px);
+  background-size:84px 84px;
+  mask-image:linear-gradient(180deg, black 0%, rgba(0,0,0,.62) 66%, transparent 100%);
 }
-.app {
-  height: 100vh;
-  min-height: 0;
-  grid-template-rows: 64px minmax(0, 1fr) 36px;
+.landing-copy{
+  position:relative;
+  z-index:4;
+  padding:72px 0 52px 76px;
+  max-width:760px;
+}
+.landing-eyebrow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:20px;
+  color:var(--accent);
+  font-family:var(--font-mono);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.20em;
+  text-transform:uppercase;
+}
+.landing-eyebrow::before{
+  content:'';
+  width:10px;
+  height:10px;
+  border:1px solid var(--accent);
+  transform:rotate(45deg);
+}
+.landing-title{
+  max-width:760px;
+  margin:0 0 20px;
+  color:var(--text-primary);
+  font-size:clamp(46px,5.3vw,76px);
+  font-weight:520;
+  line-height:.98;
+  letter-spacing:-.067em;
+}
+.landing-desc{
+  max-width:610px;
+  margin:0;
+  color:rgba(255,255,255,.72);
+  font-size:17px;
+  line-height:1.55;
+  letter-spacing:-.01em;
+}
+.landing-features{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:36px;
+  margin-top:42px;
+  max-width:760px;
+}
+.landing-feature{
+  display:grid;
+  grid-template-columns:30px 1fr;
+  gap:14px;
+  align-items:start;
+}
+.landing-icon{
+  width:28px;
+  height:28px;
+  border:1px solid rgba(0,240,255,.62);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:var(--accent);
+  font-family:var(--font-mono);
+  font-size:11px;
+}
+.landing-feature b{
+  display:block;
+  margin-bottom:5px;
+  color:var(--text-primary);
+  font-size:13px;
+}
+.landing-feature span{
+  display:block;
+  color:var(--text-tertiary);
+  font-size:12px;
+  line-height:1.45;
+}
+.hero-visual{
+  position:relative;
+  z-index:1;
+  min-height:500px;
+  background-image:url('arbiter-robotics-hero-final.png');
+  background-size:cover;
+  background-position:center center;
+  filter:saturate(.92) contrast(1.05);
+}
+.hero-visual::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg, rgba(5,6,6,.52), transparent 28%, rgba(5,6,6,.12) 68%, rgba(5,6,6,.45));
 }
 .nav,
 .main,
-.telemetry {
-  min-height: 0;
+.telemetry{
+  min-height:760px;
 }
-.main {
-  overflow-y: auto;
-  overflow-x: hidden;
-  min-height: 0;
-  scrollbar-gutter: stable;
+.main{
+  overflow:visible;
+  background:rgba(5,6,6,.62);
 }
-.hero,
-.constellation,
-.candidate-list {
-  flex: 0 0 auto;
+.main::before{
+  background:radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0,240,255,.045), transparent);
 }
-.constellation {
-  overflow: visible;
-  flex: none;
+.hero{
+  padding:36px 36px 26px;
+  border-bottom:1px solid rgba(255,255,255,.035);
 }
-.candidate-list {
-  max-height: none;
-  overflow: visible;
-  padding-bottom: 28px;
+.hero-eyebrow{
+  color:var(--accent);
 }
-.candidate-scroll {
-  overflow: visible;
+.hero-eyebrow::before{
+  background:var(--accent);
 }
-.telemetry {
-  min-height: 0;
+.hero-title{
+  font-size:clamp(31px,3.5vw,44px);
+  font-weight:680;
+  background:linear-gradient(180deg,#fff 30%,rgba(255,255,255,.68) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
-
-@media (max-width: 1200px) and (min-width: 769px) {
-  .app {
-    height: 100vh;
-    min-height: 0;
-    grid-template-rows: 64px minmax(0, 1fr) 36px;
+.mode-btn.active{
+  color:var(--accent);
+  border-color:rgba(0,240,255,.32);
+  background:rgba(0,240,255,.09);
+  box-shadow:0 0 24px rgba(0,240,255,.08);
+}
+.scenario-bar button:hover,
+.history-chip:hover,
+.btn-icon:hover{
+  color:var(--accent);
+  border-color:rgba(0,240,255,.28);
+  box-shadow:0 0 12px rgba(0,240,255,.06);
+}
+.node.winner,
+.selected-route-card{
+  border-color:rgba(0,240,255,.35) !important;
+  background:linear-gradient(180deg, rgba(0,240,255,.07), var(--surface-active)) !important;
+  box-shadow:0 0 46px rgba(0,240,255,.08), inset 0 1px 0 rgba(0,240,255,.16) !important;
+}
+.node.winner::before{
+  background:linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.node.winner .node-badge,
+.candidate-row.top .candidate-rank,
+.candidate-row.top .candidate-score{
+  color:var(--accent);
+}
+.node-fill,
+.metric-bar-fill,
+.candidate-row.top .candidate-bar{
+  background:linear-gradient(90deg,var(--accent),var(--success));
+}
+.candidate-bar{
+  background:linear-gradient(90deg,var(--accent),transparent);
+}
+.command-line:focus-within{
+  box-shadow:0 0 40px rgba(0,240,255,.10), 0 0 80px rgba(0,240,255,.03);
+}
+.command-line:focus-within::before{
+  background:linear-gradient(var(--gradient-angle), rgba(0,240,255,.22), transparent 35%, transparent 65%, rgba(0,240,255,.16));
+}
+.command-btn.primary{
+  color:var(--accent);
+  background:linear-gradient(180deg,rgba(0,240,255,.12),rgba(0,240,255,.04));
+}
+.command-btn.primary:hover{
+  background:linear-gradient(180deg,rgba(0,240,255,.20),rgba(0,240,255,.06));
+}
+.route-pill{
+  color:var(--accent);
+  border-color:rgba(0,240,255,.24);
+  box-shadow:0 4px 20px rgba(0,0,0,.5), 0 0 20px rgba(0,240,255,.08);
+}
+.robotics-strip span,
+.pipeline-card code,
+.node-code{
+  color:var(--accent);
+}
+.telemetry{
+  background:linear-gradient(180deg,rgba(255,255,255,.018),rgba(0,240,255,.02),transparent);
+}
+.metric-value.accent{
+  color:var(--accent);
+  text-shadow:0 0 20px rgba(0,240,255,.10);
+}
+.status{
+  position:sticky;
+  bottom:0;
+  z-index:80;
+  background:rgba(4,5,5,.92);
+  backdrop-filter:blur(16px);
+}
+@media(max-width:1200px){
+  .app{
+    grid-template-columns:260px 1fr;
     grid-template-areas:
       "header header"
+      "landing landing"
       "nav main"
+      "telemetry telemetry"
       "status status";
+    grid-template-rows:64px auto minmax(0,auto) auto 36px;
   }
-  .telemetry {
-    display: none;
+  .header{
+    grid-template-columns:280px 1fr;
   }
-  .main {
-    overflow-y: auto;
-    overflow-x: hidden;
+  .landing-hero{
+    grid-template-columns:1fr;
+  }
+  .hero-visual{
+    order:-1;
+    min-height:360px;
+    background-position:center;
+  }
+  .landing-copy{
+    padding:44px 34px 46px;
+  }
+  .landing-hero::before{
+    background:linear-gradient(180deg,rgba(5,6,6,.16),rgba(5,6,6,.98) 70%);
+  }
+  .nav,.main,.telemetry{
+    min-height:auto;
   }
 }
-
-@media (max-width: 768px) {
-  body {
-    overflow: auto;
+@media(max-width:768px){
+  .app{
+    grid-template-areas:"header" "landing" "main" "telemetry" "status";
+    grid-template-columns:1fr;
+    grid-template-rows:64px auto auto auto 36px;
   }
-  .app {
-    height: auto;
-    min-height: 100vh;
+  .landing-title{
+    font-size:clamp(42px,11vw,58px);
   }
-  .main {
-    overflow: visible;
+  .landing-desc{
+    font-size:14px;
+  }
+  .landing-features{
+    grid-template-columns:1fr;
+    gap:18px;
+  }
+  .hero-visual{
+    min-height:300px;
+  }
+  .telemetry{
+    display:flex;
+  }
+  .status{
+    position:static;
   }
 }
-
-</style>
+  </style>
 </head>
 <body data-mode="decision">
   <div class="ambient-bg"></div>
@@ -1663,6 +1779,20 @@ body {
         <div class="spec-pill">CPU-Only</div>
       </div>
     </header>
+
+    <section class="landing-hero" id="overview">
+      <div class="landing-copy">
+        <div class="landing-eyebrow">Arbiter Robotics</div>
+        <h1 class="landing-title">The decision layer for embodied intelligence.</h1>
+        <p class="landing-desc">Local models generate actions. Arbiter judges by coherence, selects what to execute, and returns the same judgment for the same input.</p>
+        <div class="landing-features">
+          <div class="landing-feature"><div class="landing-icon">◎</div><div><b>Coherence First</b><span>Evaluate actions by safety, feasibility, and intent alignment.</span></div></div>
+          <div class="landing-feature"><div class="landing-icon">▱</div><div><b>Local &amp; Private</b><span>Runs on-device. Robot state stays under operator control.</span></div></div>
+          <div class="landing-feature"><div class="landing-icon">◇</div><div><b>Deterministic Judgment</b><span>Same input produces the same score. No hidden state.</span></div></div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true"></div>
+    </section>
 
     <nav class="nav">
       <div class="nav-search">
@@ -1704,22 +1834,6 @@ body {
           <div><span>03</span><b>Action Set</b><small>one executable robot move per candidate line</small></div>
           <div><span>04</span><b>Motion Dispatch</b><small>planner / controller executes the selected action</small></div>
         </div>
-
-        <div class="dominant-selection" id="dominant-selection" aria-live="polite">
-          <div class="dominant-body">
-            <div>
-              <div class="dominant-code" id="dominant-code">—</div>
-              <div class="dominant-name" id="dominant-name">—</div>
-              <div class="dominant-desc" id="dominant-desc">—</div>
-            </div>
-            <div class="dominant-stats">
-              <div class="dominant-stat"><span>Score</span><b class="accent" id="dominant-score">—</b></div>
-              <div class="dominant-stat"><span>Fit</span><b id="dominant-fit">—</b></div>
-              <div class="dominant-stat"><span>Gap</span><b id="dominant-gap">—</b></div>
-              <div class="dominant-stat"><span>Separation</span><b id="dominant-separation">—</b></div>
-            </div>
-          </div>
-        </div>
       </section>
 
       <section class="constellation">
@@ -1753,7 +1867,7 @@ body {
         </div>
 
         <div class="metric-card">
-          <div class="metric-label">Fit / Separation</div>
+          <div class="metric-label">Confidence</div>
           <div class="metric-value" id="confidence-pct">—</div>
           <div class="metric-bar">
             <div class="metric-bar-fill" id="confidence-fill" style="width: 0%"></div>
@@ -1794,7 +1908,7 @@ body {
       <div class="status-segment">
         <div class="status-kv"><strong>Engine:</strong> <span id="footer-engine">&lt;1ms</span></div>
         <div class="status-kv"><strong>API:</strong> <span id="footer-api">—</span></div>
-        <div class="status-kv"><strong>Fit:</strong> <span id="footer-confidence">—</span></div>
+        <div class="status-kv"><strong>Confidence:</strong> <span id="footer-confidence">—</span></div>
       </div>
       <div class="status-segment">
         <div class="status-kv"><strong>Architecture:</strong> 26MB · CPU-only · robotics skill + action routing</div>
@@ -1816,22 +1930,7 @@ body {
     function normalizeCandidate(v){ return String(v||'').replace(/\s+/g,' ').trim().toLowerCase(); }
     function escapeHTML(v){ return String(v??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
     function setText(id,val){ const el=document.getElementById(id); if(el) el.textContent=val; }
-    function formatGap(gap){ return gap.toFixed(4); }
-
-    function getFitLabel(score){
-      if(!Number.isFinite(score)) return '—';
-      if(score < 0.500) return 'Low fit';
-      if(score < 0.650) return 'Moderate fit';
-      if(score < 0.800) return 'High fit';
-      return 'Strong fit';
-    }
-
-    function getSeparationLabel(gap){
-      if(!Number.isFinite(gap)) return '—';
-      if(gap < 0.020) return 'Close race';
-      if(gap < 0.060) return 'Separated';
-      return 'Clear winner';
-    }
+    function calculateConfidence(gap){ if(gap>0.18) return 'HIGH'; if(gap>0.075) return 'MODERATE'; return 'LOW'; }
     function summarize(v){ const first=String(v).split(/[,.]/)[0].trim(); return first.length>42 ? first.slice(0,39)+'...' : first; }
 
     function groupedScenarios(){
@@ -1891,29 +1990,19 @@ body {
 
     function getActiveCandidates(){ return getActiveDestinations().map(d=>d.candidate); }
 
-    function buildConstellation(orderedRows = null, maxScore = null){
+    function buildConstellation(){
       const grid = document.getElementById('constellation-grid');
       const destinations = getActiveDestinations();
-      const rows = orderedRows && orderedRows.length
-        ? orderedRows.map((row, index)=>({ destination: destinations[row.substrate], row, index }))
-        : destinations.map((destination, index)=>({ destination, row:null, index }));
-
-      grid.innerHTML = rows.map(({destination:s,row,index})=>{
-        const scoreText = row ? row.score.toFixed(4) : '—';
-        const pct = row && maxScore ? Math.max(0, Math.min(100, (row.score/maxScore)*100)) : 0;
-        const dominant = row && index === 0;
-        const badge = row ? (dominant ? `${activeMode === 'skill' ? 'Selected Skill' : 'Selected Action'}` : s.category) : 'Standby';
-        return `<div class="node ${dominant ? 'winner dominant-node' : ''}" id="node-${s.id}" style="animation: fade-up 0.4s ease ${index*0.01}s both;">
-          <div>
-            <div class="node-code">${escapeHTML(s.code)}</div>
-            <div class="node-name">${escapeHTML(s.name)}</div>
-          </div>
-          <div class="node-score" id="score-${s.id}">${scoreText}</div>
-          <div class="node-track"><div class="node-fill" id="bar-${s.id}" style="width:${pct}%"></div></div>
-          <div class="node-badge" id="badge-${s.id}">${escapeHTML(badge)}</div>
-        </div>`;
-      }).join('');
-      setText('constellation-meta', orderedRows && orderedRows.length ? `Winner first · ${destinations.length} candidates` : `${destinations.length} candidates`);
+      grid.innerHTML = destinations.map((s,i)=>
+        `<div class="node" id="node-${s.id}" style="animation: fade-up 0.4s ease ${i*0.01}s both;">
+          <div class="node-code">${escapeHTML(s.code)}</div>
+          <div class="node-name">${escapeHTML(s.name)}</div>
+          <div class="node-score" id="score-${s.id}">—</div>
+          <div class="node-track"><div class="node-fill" id="bar-${s.id}"></div></div>
+          <div class="node-badge" id="badge-${s.id}">Standby</div>
+        </div>`
+      ).join('');
+      setText('constellation-meta', `${destinations.length} candidates`);
       setText('surface-title', activeMode === 'skill' ? 'Robotics Skill Surface' : 'Robotics Action Surface');
       setText('candidate-title', activeMode === 'skill' ? 'Ranked Skill Candidates' : 'Ranked Action Candidates');
     }
@@ -2055,25 +2144,20 @@ body {
       const maxScore = winnerRow.score;
       const secondScore = sorted[1]?.score ?? 0;
       const gap = maxScore - secondScore;
-      const gapLabel = formatGap(gap);
-      const fitLabel = getFitLabel(maxScore);
-      const separationLabel = getSeparationLabel(gap);
-      const fitPct = maxScore ? Math.max(0, Math.min(100, Math.round(maxScore * 100))) : 0;
+      const confidence = calculateConfidence(gap);
+      const confidencePct = maxScore ? Math.max(0, Math.min(100, Math.round((gap/Math.abs(maxScore))*100))) : 0;
       const winnerSubstrate = destinations[winner];
       const latencyLabel = fromCache ? `${latency}ms cached` : `${latency}ms`;
 
       setText('latest-latency', latencyLabel);
-      setText('confidence-pct', `${fitLabel} · ${separationLabel}`);
+      setText('confidence-pct', confidence);
       setText('footer-api', latencyLabel);
-      setText('footer-confidence', `${fitLabel} · ${separationLabel}`);
+      setText('footer-confidence', confidence);
       setText('candidate-meta', `${all.length} candidates scored`);
       setText('constellation-meta', `Winner: ${winnerSubstrate.code}`);
 
       const confFill = document.getElementById('confidence-fill');
-      if(confFill) confFill.style.width = `${fitPct}%`;
-
-      updateDominantSelection(winnerSubstrate, winnerRow, gap, fitLabel, separationLabel);
-      buildConstellation(sorted, maxScore);
+      if(confFill) confFill.style.width = `${Math.min(confidencePct * 2.5, 100)}%`;
 
       all.forEach(row=>{
         const isWinner = row.substrate === winner;
@@ -2085,7 +2169,7 @@ body {
         node?.classList.toggle('winner', isWinner);
         if(scoreEl){ scoreEl.textContent = row.score.toFixed(4); scoreEl.style.color = isWinner ? 'var(--accent)' : ''; }
         if(barEl) barEl.style.width = `${pct}%`;
-        if(badgeEl) badgeEl.textContent = isWinner ? `${activeMode === 'skill' ? 'Selected Skill' : 'Selected Action'}` : destinations[row.substrate].category;
+        if(badgeEl) badgeEl.textContent = isWinner ? `${activeMode === 'skill' ? 'Route' : 'Select'} · ${confidence}` : destinations[row.substrate].category;
       });
 
       const pill = document.getElementById('route-pill');
@@ -2104,9 +2188,8 @@ body {
         code: winnerSubstrate.code,
         category: winnerSubstrate.category,
         score: Number(maxScore.toFixed(6)),
-        fit: fitLabel,
         gap: Number(gap.toFixed(6)),
-        separation: separationLabel,
+        confidence,
         latency_ms: latency,
         cache: fromCache,
         endpoint: API,
@@ -2125,19 +2208,6 @@ body {
         resBody.classList.remove('error');
         resBody.classList.add('active');
       }
-    }
-
-    function updateDominantSelection(winnerSubstrate, winnerRow, gap, fitLabel, separationLabel){
-      const panel = document.getElementById('dominant-selection');
-      if(!panel || !winnerSubstrate || !winnerRow) return;
-      setText('dominant-code', `${winnerSubstrate.code} · ${winnerSubstrate.category}`);
-      setText('dominant-name', winnerSubstrate.name);
-      setText('dominant-desc', winnerSubstrate.candidate || winnerRow.text || 'Selected route candidate');
-      setText('dominant-score', winnerRow.score.toFixed(4));
-      setText('dominant-fit', fitLabel);
-      setText('dominant-gap', gap.toFixed(4));
-      setText('dominant-separation', separationLabel);
-      panel.classList.add('active');
     }
 
     function renderCandidates(sorted, maxScore, destinations){
@@ -2170,7 +2240,6 @@ body {
         if(scoreEl) scoreEl.style.color = '';
       });
       document.getElementById('route-pill')?.classList.remove('active');
-      document.getElementById('dominant-selection')?.classList.remove('active');
       document.getElementById('result-body')?.classList.remove('active');
       setText('candidate-meta', 'Routing...');
       setText('constellation-meta', `${getActiveDestinations().length} candidates`);
@@ -2203,7 +2272,6 @@ JSON`;
         pill.style.color = 'var(--danger)';
         pill.classList.add('active');
       }
-      document.getElementById('dominant-selection')?.classList.remove('active');
       const resBody = document.getElementById('result-body');
       if(resBody){
         resBody.textContent = `API Error: ${msg}`;
