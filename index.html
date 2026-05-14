@@ -2689,6 +2689,73 @@ body{
   }
 }
 
+  
+
+/* ─── Patch: restore mobile hero image slot + text-only ARBITER header ─── */
+.brand::before {
+  display: none !important;
+  content: none !important;
+}
+
+.brand {
+  gap: 0 !important;
+}
+
+.brand h1 {
+  text-transform: uppercase !important;
+  letter-spacing: .04em !important;
+}
+
+.brand span {
+  display: none !important;
+}
+
+.hero-visual {
+  background-image: url('arbiter-robotics-hero-final.png') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+}
+
+@media (max-width: 768px) {
+  .landing-hero {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .hero-visual {
+    display: block !important;
+    order: -1 !important;
+    width: 100% !important;
+    height: clamp(220px, 58vw, 360px) !important;
+    min-height: clamp(220px, 58vw, 360px) !important;
+    flex: 0 0 auto !important;
+    background-image: url('arbiter-robotics-hero-final.png') !important;
+    background-size: cover !important;
+    background-position: 58% center !important;
+    background-repeat: no-repeat !important;
+  }
+
+  .hero-visual::after {
+    background: linear-gradient(180deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.34) 48%, rgba(0,0,0,.82) 100%) !important;
+  }
+
+  .landing-copy {
+    order: 0 !important;
+  }
+
+  .header {
+    justify-content: flex-start !important;
+  }
+
+  .header-specs {
+    margin-left: auto !important;
+  }
+}
+
   </style>
 </head>
 <body data-mode="decision">
