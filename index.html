@@ -1427,7 +1427,7 @@ body{
 .app{
   min-height:100vh;
   height:auto;
-  grid-template-rows:64px minmax(640px,72vh) minmax(760px,auto) 36px;
+  grid-template-rows:64px minmax(500px,58vh) minmax(760px,auto) 36px;
   grid-template-columns:300px minmax(0,1fr) 340px;
   grid-template-areas:
     "header header header"
@@ -1510,7 +1510,7 @@ body{
 .landing-copy{
   position:relative;
   z-index:4;
-  padding:58px 0 74px 76px;
+  padding:72px 0 52px 76px;
   max-width:760px;
 }
 .landing-eyebrow{
@@ -1553,7 +1553,7 @@ body{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:36px;
-  margin-top:28px;
+  margin-top:42px;
   max-width:760px;
 }
 .landing-feature{
@@ -1747,8 +1747,7 @@ body{
   }
   .landing-features{
     grid-template-columns:1fr;
-    gap:16px;
-    margin-top:24px;
+    gap:18px;
   }
   .hero-visual{
     min-height:300px;
@@ -1762,26 +1761,432 @@ body{
 }
   
 
-/* Final clipping + confidence calibration patch */
-.landing-hero{
-  min-height:640px;
-  overflow:hidden;
+/* ─── Mobile optimization pass: no clipped hero, stacked console, thumb-safe controls ─── */
+@media (max-width: 900px) {
+  html, body {
+    width: 100%;
+    min-height: 100%;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .app {
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-areas:
+      "header"
+      "landing"
+      "main"
+      "telemetry"
+      "status";
+  }
+
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: auto;
+    min-height: 58px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0,0,0,.88);
+    backdrop-filter: blur(18px);
+  }
+
+  .brand {
+    min-width: 0;
+    gap: 9px;
+  }
+
+  .brand::before {
+    width: 17px;
+    height: 17px;
+    border-radius: 4px;
+  }
+
+  .brand h1 {
+    font-size: 17px;
+    letter-spacing: .02em;
+  }
+
+  .brand span {
+    display: none;
+  }
+
+  .header-specs {
+    margin-left: auto;
+    gap: 6px;
+    flex: 0 0 auto;
+  }
+
+  .spec-pill {
+    height: 26px;
+    padding: 0 8px;
+    font-size: 9px;
+  }
+
+  .spec-pill:nth-child(2),
+  .spec-pill:nth-child(3) {
+    display: none;
+  }
+
+  .landing-hero {
+    grid-area: landing;
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    height: auto;
+    overflow: visible;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .landing-hero::before {
+    background:
+      linear-gradient(180deg, rgba(0,0,0,.02) 0%, rgba(0,0,0,.50) 48%, rgba(0,0,0,.98) 100%),
+      radial-gradient(circle at 55% 15%, rgba(0,240,255,.16), transparent 34%);
+  }
+
+  .landing-hero::after {
+    opacity: .9;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,.55), black 55%, transparent 100%);
+  }
+
+  .hero-visual {
+    order: 0;
+    width: 100%;
+    min-height: clamp(240px, 54vw, 420px);
+    background-size: cover;
+    background-position: 60% center;
+  }
+
+  .hero-visual::after {
+    background: linear-gradient(180deg, transparent 10%, rgba(0,0,0,.72) 86%);
+  }
+
+  .landing-copy {
+    order: 1;
+    width: 100%;
+    padding: 26px 18px 30px;
+    max-width: none;
+  }
+
+  .landing-eyebrow {
+    margin-bottom: 14px;
+    font-size: 9px;
+    letter-spacing: .18em;
+  }
+
+  .landing-title {
+    max-width: 100%;
+    font-size: clamp(38px, 11.5vw, 60px);
+    line-height: 1.0;
+    letter-spacing: -.062em;
+    margin-bottom: 16px;
+  }
+
+  .landing-desc {
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .landing-features {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 22px;
+    max-width: none;
+  }
+
+  .landing-feature {
+    grid-template-columns: 28px 1fr;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    background: rgba(255,255,255,.026);
+  }
+
+  .landing-feature b {
+    font-size: 13px;
+    margin-bottom: 3px;
+  }
+
+  .landing-feature span {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .main {
+    grid-area: main;
+    min-height: auto;
+    overflow: visible;
+  }
+
+  .main::before {
+    height: 180px;
+  }
+
+  .hero {
+    padding: 26px 18px 22px;
+  }
+
+  .hero-title {
+    font-size: clamp(30px, 8.4vw, 44px);
+    line-height: 1.07;
+  }
+
+  .hero-desc {
+    max-width: 100%;
+    font-size: 13px;
+  }
+
+  .mode-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .mode-btn {
+    width: 100%;
+    min-height: 40px;
+    padding: 10px 8px;
+  }
+
+  .command-interface {
+    margin-bottom: 18px;
+  }
+
+  .command-line {
+    flex-direction: column;
+    border-radius: 12px;
+  }
+
+  .command-prompt {
+    display: none;
+  }
+
+  .command-input {
+    width: 100%;
+    min-height: 132px;
+    padding: 14px;
+    font-size: 12px;
+  }
+
+  .command-actions {
+    flex-direction: row;
+    border-left: 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .command-btn {
+    min-height: 46px;
+    width: 50%;
+  }
+
+  .route-pill {
+    position: static;
+    display: inline-flex;
+    max-width: 100%;
+    margin: 10px 0 0;
+    white-space: normal;
+    line-height: 1.35;
+    transform: none;
+  }
+
+  .scenario-bar {
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin: 16px -18px 0;
+    padding: 0 18px 4px;
+    scrollbar-width: none;
+  }
+
+  .scenario-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scenario-bar button {
+    flex: 0 0 auto;
+    min-height: 34px;
+  }
+
+  .robotics-strip {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .robotics-strip div {
+    min-height: auto;
+    padding: 13px;
+  }
+
+  .constellation {
+    padding: 0 18px 20px;
+    overflow: visible;
+  }
+
+  .constellation-header {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .constellation-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .node {
+    min-height: 128px;
+    padding: 13px;
+  }
+
+  .node-name {
+    min-height: 34px;
+  }
+
+  .candidate-list {
+    padding: 0 18px 24px;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .candidate-scroll {
+    overflow: visible;
+  }
+
+  .candidate-row {
+    display: grid;
+    grid-template-columns: 22px 1fr 58px;
+    gap: 10px;
+    padding: 12px 0;
+  }
+
+  .candidate-bar-wrap {
+    grid-column: 2 / 4;
+    width: 100%;
+  }
+
+  .candidate-score {
+    font-size: 11px;
+  }
+
+  .telemetry {
+    grid-area: telemetry;
+    display: flex;
+    min-height: auto;
+    max-height: none;
+    border-left: 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .telemetry-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 14px;
+    overflow: visible;
+  }
+
+  .metric-card {
+    min-height: 94px;
+    padding: 14px;
+  }
+
+  .metric-value {
+    font-size: 18px;
+  }
+
+  .editor-panel,
+  .result-panel {
+    grid-column: 1 / -1;
+  }
+
+  .action-editor {
+    min-height: 180px;
+    font-size: 10px;
+  }
+
+  .curl-block,
+  .result-body.active {
+    max-height: 220px;
+    font-size: 9px;
+  }
+
+  .status {
+    grid-area: status;
+    position: static;
+    height: auto;
+    min-height: 44px;
+    display: block;
+    padding: 10px 14px;
+    line-height: 1.7;
+  }
+
+  .status-segment {
+    flex-wrap: wrap;
+    gap: 8px 14px;
+  }
+
+  .status-segment:last-child {
+    display: none;
+  }
 }
-.landing-copy{
-  padding-top:58px;
-  padding-bottom:74px;
+
+@media (max-width: 430px) {
+  .landing-title {
+    font-size: 38px;
+  }
+
+  .constellation-grid,
+  .telemetry-body {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card {
+    min-height: auto;
+  }
+
+  .candidate-row {
+    grid-template-columns: 22px 1fr 56px;
+  }
+
+  .spec-pill:nth-child(4) {
+    display: none;
+  }
 }
-.landing-features{
-  margin-top:28px;
-  padding-bottom:28px;
-}
-@media(max-width:1200px){
-  .landing-hero{min-height:auto;}
-  .landing-copy{padding-bottom:56px;}
-}
-@media(max-width:768px){
-  .landing-copy{padding-bottom:42px;}
-  .landing-features{margin-top:24px;padding-bottom:0;}
+
+@media (min-width: 901px) {
+  .app {
+    grid-template-rows: 64px minmax(620px, auto) minmax(760px, auto) 36px;
+  }
+
+  .landing-hero {
+    min-height: 620px;
+  }
+
+  .landing-copy {
+    padding-top: 64px;
+    padding-bottom: 78px;
+  }
+
+  .landing-features {
+    margin-top: 30px;
+  }
 }
 
   </style>
@@ -2197,7 +2602,7 @@ body{
         node?.classList.toggle('winner', isWinner);
         if(scoreEl){ scoreEl.textContent = row.score.toFixed(4); scoreEl.style.color = isWinner ? 'var(--accent)' : ''; }
         if(barEl) barEl.style.width = `${pct}%`;
-        if(badgeEl) badgeEl.textContent = isWinner ? `${activeMode === 'skill' ? 'Route' : 'Select'} · ${fit}` : destinations[row.substrate].category;
+        if(badgeEl) badgeEl.textContent = isWinner ? `${activeMode === 'skill' ? 'Route' : 'Select'} · ${confidence}` : destinations[row.substrate].category;
       });
 
       const pill = document.getElementById('route-pill');
